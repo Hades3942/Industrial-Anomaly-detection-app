@@ -34,7 +34,7 @@ CSV_PATH = DATA_DIR / "cleaned_project_dataset.csv"
 FEATURES_CSV_PATH = DATA_DIR / "model_features.csv"  # optional (exported from Colab)
 DB_PATH = DATA_DIR / "predictions.db"
 
-RESIZE_TO = (128, 128)  # must match Assignment 4
+RESIZE_TO = (128, 128)  
 MAX_UPLOAD_MB = 10
 MIN_IMAGE_SIDE = 32
 
@@ -57,7 +57,7 @@ FEATURE_SPECS = {
 }
 SIZE_MIN, SIZE_MAX = MIN_IMAGE_SIDE, 10000
 
-# Results copied from the Assignment 4 notebook (test set: 652 images, 495 normal / 157 anomalous)
+# Results from the submitted google colab  (test set: 652 images, 495 normal / 157 anomalous)
 RESULTS = pd.DataFrame(
     {
         "Model": ["Random Forest", "Decision Tree", "Logistic Regression"],
@@ -124,7 +124,7 @@ def get_categories(columns):
 
 
 # --------------------------------------------------------------------------------------
-# Feature extraction / model input (mirrors Assignment 4 exactly)
+# Feature extraction / model input 
 # --------------------------------------------------------------------------------------
 def extract_features(file_bytes):
     """Return (features_dict, width, height, RGB PIL image) from raw image bytes."""
