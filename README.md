@@ -46,5 +46,6 @@ The app opens at http://localhost:8501.
 
 ## 4. Live link(Deployed online)
 1.  Github repo : https://github.com/Hades3942/Industrial-Anomaly-detection-app
+2.  Live streamlit app link : https://industrial-anomaly-detection-app-95ofqq3vxgp2edxeibslnf.streamlit.app/
 ## 5. Notes
 * Dataset licence: MVTec AD is CC BY-NC-SA 4.0 (non-commercial use with attribution).
