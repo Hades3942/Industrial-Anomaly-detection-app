@@ -12,7 +12,10 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-import joblib
+try:
+    import joblib
+except Exception:
+    joblib = None
 import matplotlib
 try:
     import cv2
@@ -92,6 +95,8 @@ st.set_page_config(page_title="MVTec AD Anomaly Detector", page_icon="🔍", lay
 def load_artifacts():
     """Load the saved model, feature-column list and (optional) scaler. Never retrains."""
     try:
+        if joblib is None:
+            return {"error": "joblib is not installed in the deployment environment. Install the app dependencies from requirements.txt and redeploy."}
         model_files = sorted(MODEL_DIR.glob("best_model_*.joblib"))
         if not model_files:
             return {"error": f"No model file (best_model_*.joblib) found in '{MODEL_DIR.name}/'."}
