@@ -12,9 +12,12 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-import cv2
 import joblib
 import matplotlib
+try:
+    import cv2
+except Exception:
+    cv2 = None
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -142,8 +145,18 @@ def extract_features(file_bytes):
 
     small = img.resize(RESIZE_TO)
     arr = np.array(small)
-    gray = cv2.cvtColor(arr, cv2.COLOR_RGB2GRAY)
-    edges = cv2.Canny(gray, 100, 200)
+    if cv2 is not None:
+        gray = cv2.cvtColor(arr, cv2.COLOR_RGB2GRAY)
+        edges = cv2.Canny(gray, 100, 200)
+    else:
+        # Deployment fallback when OpenCV is missing: grayscale + simple gradient threshold.
+        gray = (0.299 * arr[:, :, 0] + 0.587 * arr[:, :, 1] + 0.114 * arr[:, :, 2]).astype(np.float32)
+        gx = np.zeros_like(gray)
+        gy = np.zeros_like(gray)
+        gx[:, 1:] = np.abs(gray[:, 1:] - gray[:, :-1])
+        gy[1:, :] = np.abs(gray[1:, :] - gray[:-1, :])
+        grad_mag = np.hypot(gx, gy)
+        edges = (grad_mag > 25.0).astype(np.uint8) * 255
     feats = {
         "mean_r": float(arr[:, :, 0].mean()), "mean_g": float(arr[:, :, 1].mean()),
         "mean_b": float(arr[:, :, 2].mean()),
